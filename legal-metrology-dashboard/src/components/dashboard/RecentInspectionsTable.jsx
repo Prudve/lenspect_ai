@@ -1,5 +1,4 @@
-import React from 'react';
-import { PackageSearch, CheckCircle, XCircle, Clock } from 'lucide-react';
+import { Eye, PackageSearch, CheckCircle, XCircle, Clock } from 'lucide-react';
 import './RecentInspectionsTable.css';
 
 function getStatusBadge(status) {
@@ -29,7 +28,7 @@ function getStatusBadge(status) {
   }
 }
 
-function RecentInspectionsTable({ inspections }) {
+function RecentInspectionsTable({ inspections, onViewInspection }) {
   if (!inspections || inspections.length === 0) return null;
 
   return (
@@ -56,26 +55,49 @@ function RecentInspectionsTable({ inspections }) {
               <th>Field Inspector</th>
               <th>Inspection Date</th>
               <th>Compliance Status</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {inspections.map((item) => (
-              <tr key={item.id}>
-                <td>
+              <tr key={item.id} style={{ cursor: onViewInspection ? 'pointer' : 'default' }}>
+                <td onClick={() => onViewInspection && onViewInspection(item.id)}>
                   <div className="product-cell">
                     <span className="product-name">{item.product}</span>
                     <span className="product-cat">{item.category} &bull; {item.id}</span>
                   </div>
                 </td>
-                <td className="text-secondary">{item.manufacturer}</td>
-                <td>
+                <td className="text-secondary" onClick={() => onViewInspection && onViewInspection(item.id)}>{item.manufacturer}</td>
+                <td onClick={() => onViewInspection && onViewInspection(item.id)}>
                   <div className="inspector-cell">
                     <span className="inspector-name">{item.inspector}</span>
                     <span className="inspector-id">{item.inspectorId}</span>
                   </div>
                 </td>
-                <td className="date-cell">{item.timestamp}</td>
-                <td>{getStatusBadge(item.status)}</td>
+                <td className="date-cell" onClick={() => onViewInspection && onViewInspection(item.id)}>{item.timestamp}</td>
+                <td onClick={() => onViewInspection && onViewInspection(item.id)}>{getStatusBadge(item.status)}</td>
+                <td>
+                  <button
+                    type="button"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '4px 10px',
+                      fontSize: '0.8rem',
+                      fontWeight: 600,
+                      borderRadius: '6px',
+                      border: '1px solid #cbd5e1',
+                      background: '#ffffff',
+                      color: '#1e293b',
+                      cursor: 'pointer'
+                    }}
+                    onClick={() => onViewInspection && onViewInspection(item.id)}
+                  >
+                    <Eye size={14} />
+                    <span>View</span>
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

@@ -11,6 +11,14 @@ import {
 import api from '../services/api';
 import './ComplianceReportsPage.css';
 
+const MANUFACTURER_REPORT_DATA = [
+  { name: 'Hindustan Unilever Limited', inspections: 84, violations: 12, status: 'Audited' },
+  { name: 'ITC Limited', inspections: 65, violations: 4, status: 'Compliant' },
+  { name: 'Nestlé India', inspections: 52, violations: 9, status: 'Under Review' },
+  { name: 'Britannia Industries', inspections: 41, violations: 6, status: 'Audited' },
+  { name: 'Dabur India', inspections: 38, violations: 2, status: 'Compliant' }
+];
+
 function ComplianceReportsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState('Last 7 Days');
   const [loading, setLoading] = useState(true);

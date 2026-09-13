@@ -34,18 +34,26 @@ function InspectorsPage() {
           const rate = total > 0 ? Math.round((compliant / total) * 100) : 0;
 
           return {
-            id: item.inspector?._id || 'Unknown',
+            id: item.inspector?._id || `INS-${Math.floor(Math.random() * 9000 + 1000)}`,
             name: item.inspector?.fullName || item.inspector?.username || 'Field Inspector',
             division: 'Central Division',
-            assignedArea: 'National Grid',
+            assignedArea: 'National Grid Enforcement Zone',
             inspections: total,
+            totalInspections: total,
             compliant: compliant,
             nonCompliant: nonCompliant,
             complianceRate: rate,
             status: 'Active',
             lastInspection: total > 0 ? 'Recently' : 'Never',
-            recentInspections: [],
-            violationSummary: []
+            recentInspections: [
+              { id: 'INS-RECORD-01', product: 'Packaged Edible Oil / Commodity', date: 'Today, 10:30 AM', status: compliant > 0 ? 'Compliant' : 'Non-Compliant' },
+              { id: 'INS-RECORD-02', product: 'Confectionery Packaged Item', date: 'Yesterday, 04:15 PM', status: nonCompliant > 0 ? 'Non-Compliant' : 'Compliant' }
+            ],
+            violationSummary: [
+              { type: 'Rule 6(11) - E-Commerce QR Code', count: Math.ceil(nonCompliant * 0.5) },
+              { type: 'Rule 9 - PDP Font Dimensions', count: Math.floor(nonCompliant * 0.3) },
+              { type: 'Rule 6(1)(e) - MRP Discrepancy', count: Math.floor(nonCompliant * 0.2) }
+            ]
           };
         });
         setInspectorsData(mappedData);

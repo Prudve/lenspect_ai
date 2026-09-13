@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, CircleMarker, Popup, Tooltip, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import {
@@ -27,6 +28,7 @@ function MapViewController({ center, zoom }) {
 }
 
 export function ViolationHeatmap() {
+  const navigate = useNavigate();
   const [hotspots, setHotspots] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRule, setSelectedRule] = useState('ALL');
@@ -416,7 +418,7 @@ export function ViolationHeatmap() {
                           type="button"
                           className="popup-action-btn"
                           onClick={() => {
-                            window.location.hash = 'violations';
+                            navigate('/violations');
                           }}
                         >
                           <ShieldAlert size={14} />

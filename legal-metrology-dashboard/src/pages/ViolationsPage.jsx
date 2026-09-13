@@ -31,19 +31,29 @@ function ViolationsPage() {
         const response = await api.get('/notices/?limit=200&page=1');
         const notices = response?.data?.notices || response?.notices || [];
 
-        const mappedData = notices.map(notice => ({
-          id: notice._id,
-          inspectionId: notice.inspection?._id || 'Unknown',
-          productName: notice.inspection?.extractedData?.commodity_name || 'Unknown Product',
-          manufacturer: notice.inspection?.extractedData?.manufacturer_name || 'Unknown Manufacturer',
-          inspector: notice.issuer?.fullName || notice.issuer?.username || 'System',
-          violationType: 'Rule Violation',
-          description: notice.notes || 'Notice generated',
-          ruleReference: 'PC Rules, 2011',
-          severity: 'High',
-          status: notice.status === 'DRAFT' ? 'Under Review' : notice.status === 'ISSUED' ? 'Open' : 'Resolved',
-          inspectionDate: notice.createdAt
-        }));
+        const mappedData = notices.map(notice => {
+          const firstRule = notice.violations?.[0]?.rule || notice.violations?.[0]?.description || '';
+          let vType = 'Rule Violation';
+          if (firstRule.toLowerCase().includes('mrp') || firstRule.toLowerCase().includes('price')) vType = 'Missing MRP';
+          else if (firstRule.toLowerCase().includes('quantity') || firstRule.toLowerCase().includes('net')) vType = 'Net Quantity Format';
+          else if (firstRule.toLowerCase().includes('manufacturer') || firstRule.toLowerCase().includes('packer')) vType = 'Missing Manufacturer';
+          else if (firstRule.toLowerCase().includes('date') || firstRule.toLowerCase().includes('mfg')) vType = 'Missing Pack Date';
+          else if (firstRule.toLowerCase().includes('unit')) vType = 'Unit Sale Price Omission';
+
+          return {
+            id: notice._id,
+            inspectionId: notice.inspection?._id || notice.inspectionId || 'Unknown',
+            productName: notice.inspection?.extractedData?.commodity_name || 'Commodity Package',
+            manufacturer: notice.inspection?.extractedData?.manufacturer_name || 'Monitored Manufacturer',
+            inspector: notice.issuedBy?.fullName || notice.issuedBy?.username || 'Field Officer',
+            violationType: vType,
+            description: notice.notes || notice.violations?.[0]?.description || 'Statutory declaration non-compliance',
+            ruleReference: notice.violations?.[0]?.rule || 'PC Rules, 2011',
+            severity: 'High',
+            status: notice.status === 'DRAFT' ? 'Under Review' : notice.status === 'ISSUED' ? 'Open' : 'Resolved',
+            inspectionDate: notice.createdAt
+          };
+        });
         setViolationsData(mappedData);
       } catch (err) {
         console.error('Failed to fetch violations', err);

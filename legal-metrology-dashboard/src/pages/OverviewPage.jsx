@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Flame, ArrowUpRight, Loader2 } from 'lucide-react';
 import StatCard from '../components/dashboard/StatCard';
 import ComplianceTrendChart from '../components/dashboard/ComplianceTrendChart';
@@ -9,6 +9,7 @@ import api from '../services/api.js';
 import './OverviewPage.css';
 
 function OverviewPage() {
+  const navigate = useNavigate();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -188,7 +189,10 @@ function OverviewPage() {
       {/* 3. BOTTOM: Recent Inspection Activity */}
       <section className="overview-section bottom-grid" aria-label="Recent Operational Activity">
         <div className="table-column">
-          <RecentInspectionsTable inspections={data.recentInspectionsData} />
+          <RecentInspectionsTable
+            inspections={data.recentInspectionsData}
+            onViewInspection={(id) => navigate('/product-details/' + id)}
+          />
         </div>
       </section>
     </div>

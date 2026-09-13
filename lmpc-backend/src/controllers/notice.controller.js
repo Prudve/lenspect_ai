@@ -27,6 +27,9 @@ const generateNotice = asyncHandler(async (req, res) => {
     }
 
     const noticeNumber = `LMPC-NOTICE-${Date.now()}`;
+    if (!fs.existsSync("./public/temp")) {
+        fs.mkdirSync("./public/temp", { recursive: true });
+    }
     const tempPdfPath = path.join("./public/temp", `${noticeNumber}.pdf`);
 
     const noticePayload = {
@@ -35,25 +38,28 @@ const generateNotice = asyncHandler(async (req, res) => {
         inspectorId: req.user._id,
         createdAt: new Date(),
         extractedData: inspection.extractedData,
-        violations: violations || [{ rule: "LMPC Act Section 6", description: "Mandatory declaration non-compliance" }]
+        violations: violations || inspection.violations || [{ rule: "LMPC Act Section 6", description: "Mandatory declaration non-compliance" }]
     };
 
-    //Render PDF using PDFKit
+    // Render PDF using PDFKit
     await generateNoticePDF(noticePayload, tempPdfPath);
 
-    // Upload generated PDF to Cloudinary
-    const cloudinaryResponse = await uploadOnCloudinary(tempPdfPath);
-
-    if (!cloudinaryResponse) {
-        throw new ApiError(500, "Failed to upload generated notice PDF to Cloudinary");
+    // Upload generated PDF to Cloudinary if configured
+    let cloudinaryResponse = null;
+    try {
+        cloudinaryResponse = await uploadOnCloudinary(tempPdfPath);
+    } catch (err) {
+        console.warn("Cloudinary upload omitted or failed, using local PDF file:", err.message);
     }
     
+    const pdfUrl = cloudinaryResponse?.secure_url || `/temp/${noticeNumber}.pdf`;
+
     // Save Notice document in MongoDB
     const notice = await Notice.create({
         noticeNumber,
         inspection: inspection._id,
         issuedBy: req.user._id,
-        pdfUrl: cloudinaryResponse?.secure_url || null,
+        pdfUrl,
         cloudinaryPublicId: cloudinaryResponse?.public_id || null,
         violations: noticePayload.violations,
         status: "ISSUED"
@@ -104,12 +110,37 @@ const getNoticeById = asyncHandler(async (req, res) => {
 const downloadNoticePDF = asyncHandler(async (req, res) => {
     const { noticeId } = req.params;
 
-    const notice = await Notice.findById(noticeId);
-    if (!notice || !notice.pdfUrl) {
-        throw new ApiError(404, "Notice PDF record not found");
+    const notice = await Notice.findById(noticeId).populate("inspection");
+    if (!notice) {
+        throw new ApiError(404, "Notice record not found");
     }
 
-    return res.redirect(notice.pdfUrl);
+    if (notice.pdfUrl && notice.pdfUrl.startsWith("http")) {
+        return res.redirect(notice.pdfUrl);
+    }
+
+    const localFileName = `${notice.noticeNumber}.pdf`;
+    const localPdfPath = path.join("./public/temp", localFileName);
+
+    if (fs.existsSync(localPdfPath)) {
+        return res.download(localPdfPath, localFileName);
+    }
+
+    if (!fs.existsSync("./public/temp")) {
+        fs.mkdirSync("./public/temp", { recursive: true });
+    }
+
+    const noticePayload = {
+        noticeNumber: notice.noticeNumber,
+        inspectionId: notice.inspection?._id || notice.inspection,
+        inspectorId: notice.issuedBy,
+        createdAt: notice.createdAt || new Date(),
+        extractedData: notice.inspection?.extractedData || {},
+        violations: notice.violations || [{ rule: "LMPC Act Section 6", description: "Mandatory declaration non-compliance" }]
+    };
+
+    await generateNoticePDF(noticePayload, localPdfPath);
+    return res.download(localPdfPath, localFileName);
 });
 
 const cancelNotice = asyncHandler(async (req, res) => {

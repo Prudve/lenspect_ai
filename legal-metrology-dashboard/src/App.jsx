@@ -105,6 +105,15 @@ const SECTIONS_CONFIG = {
 /**
  * Product Details Route Adapter
  */
+function InspectionHistoryRouteWrapper() {
+  const navigate = useNavigate();
+  return (
+    <InspectionHistoryPage
+      onViewInspection={(id) => navigate(`/product-details/${id}`)}
+    />
+  );
+}
+
 function ProductDetailsWrapper() {
   const { inspectionId } = useParams();
   const navigate = useNavigate();
@@ -112,7 +121,13 @@ function ProductDetailsWrapper() {
   return (
     <ProductDetailsPage
       product={{ inspectionId }}
-      onBack={() => navigate('/inspection-history')}
+      onBack={() => {
+        if (window.history.length > 2) {
+          navigate(-1);
+        } else {
+          navigate('/inspection-history');
+        }
+      }}
     />
   );
 }
@@ -233,9 +248,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardShell currentSection="inspection-history">
-                  <InspectionHistoryPage
-                    onViewInspection={(id) => (window.location.href = `/product-details/${id}`)}
-                  />
+                  <InspectionHistoryRouteWrapper />
                 </DashboardShell>
               </ProtectedRoute>
             }
