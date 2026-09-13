@@ -1,0 +1,214 @@
+.products-table-container {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.table-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.products-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.8125rem;
+}
+
+.products-data-table thead tr {
+  background-color: #f8fafc;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.products-data-table th {
+  padding: 0.85rem 1.15rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.action-th {
+  text-align: center;
+  width: 90px;
+}
+
+.products-data-table tbody tr {
+  border-bottom: 1px solid var(--color-border-light);
+  transition: background-color var(--transition-fast);
+}
+
+.products-data-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.products-data-table td {
+  padding: 0.9rem 1.15rem;
+  color: var(--color-text-main);
+  vertical-align: middle;
+}
+
+.inspection-id-cell {
+  white-space: nowrap;
+}
+
+.id-badge-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #dbeafe;
+}
+
+.id-icon {
+  color: var(--color-primary);
+}
+
+.product-cell-main {
+  min-width: 240px;
+}
+
+.product-name-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.product-title {
+  font-weight: 600;
+  color: var(--color-text-main);
+  line-height: 1.3;
+}
+
+.product-subtext {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.category-pill {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  background-color: #f1f5f9;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  font-size: 0.725rem;
+  font-weight: 500;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.manufacturer-cell {
+  font-weight: 500;
+  color: #334155;
+  min-width: 180px;
+}
+
+.inspector-info-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  white-space: nowrap;
+}
+
+.inspector-name {
+  font-weight: 500;
+  color: var(--color-text-main);
+}
+
+.inspector-code {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  font-family: monospace;
+}
+
+.date-cell {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.status-badge-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+  white-space: nowrap;
+}
+
+.violation-count-pill {
+  font-size: 0.675rem;
+  font-weight: 600;
+  color: #dc2626;
+  background-color: #fee2e2;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+  border: 1px solid #fecaca;
+}
+
+.action-td {
+  text-align: center;
+}
+
+.view-details-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  background-color: #ffffff;
+  color: var(--color-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.view-details-btn:hover {
+  background-color: var(--color-primary-light);
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+/* Empty State */
+.table-empty-state {
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.empty-icon {
+  color: #94a3b8;
+}
+
+.empty-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.empty-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  max-width: 420px;
+  line-height: 1.5;
+}

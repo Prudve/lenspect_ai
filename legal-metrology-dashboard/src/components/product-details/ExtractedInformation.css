@@ -1,0 +1,133 @@
+.extracted-info-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.extracted-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.extracted-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.extracted-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background-color: #f1f5f9;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.extracted-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  letter-spacing: -0.01em;
+}
+
+.extracted-subtitle {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.ocr-disclaimer-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #0369a1;
+  background-color: #e0f2fe;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid #bae6fd;
+}
+
+.extracted-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background-color: var(--color-border-light);
+}
+
+@media (max-width: 700px) {
+  .extracted-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.extracted-field-cell {
+  background-color: #ffffff;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cell-alert {
+  background-color: #fff1f2;
+}
+
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.field-value-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+}
+
+.success-icon {
+  color: var(--color-compliant);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.alert-icon {
+  color: var(--color-non-compliant);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.field-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-main);
+  line-height: 1.35;
+}
+
+.text-alert {
+  color: #dc2626 !important;
+  font-weight: 700;
+}
+
+.extracted-notice-footer {
+  padding: 0.75rem 1.5rem;
+  background-color: #f8fafc;
+  border-top: 1px solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
